@@ -69,11 +69,10 @@ function validPeople(req, res, next){
 }
 
 function futureRes(req, res, next){
-  const now = Date.now()
   const resDate = req.body.data.reservation_date
-  const date = new Date(resDate)
-  const dateUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  if(now > dateUTC){
+  const resTime = req.body.data.reservation_time
+  const date = new Date(`${resDate} ${resTime}`)
+  if(new Date() > date){
     next({
       status: 400,
       message: `Reservations must be for future dates`,
@@ -95,6 +94,25 @@ function notTuesday(req, res, next) {
   next()
 }
 
+function openHours(req, res, next){
+  const resDate = req.body.data.reservation_date
+  const resTime = req.body.data.reservation_time
+  const date = new Date(`${resDate} ${resTime}`)
+  if(date.getHours() < 10 || (date.getHours() === 10 && date.getMinutes() < 30)){
+    next({
+      status: 400,
+      message: `The restaurant opens after 10:30 am`,
+    })
+  }
+  if(date.getHours() > 21 || (date.getHours() === 21 && date.getMinutes() > 30)){
+    next({
+      status: 400,
+      message: `The restaurant closes for orders after 09:30 pm`,
+    })
+  }
+  next()
+}
+
 module.exports = {
   list,
   create: [
@@ -104,6 +122,7 @@ module.exports = {
     validPeople,
     notTuesday,
     futureRes,
+    openHours,
     asyncErrorBoundary(create)
   ],
 };
