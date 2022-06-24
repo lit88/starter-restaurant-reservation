@@ -20,6 +20,11 @@ async function create(req, res, next) {
   res.status(201).json({data})
 }
 
+async function read(req, res, next) {
+  const data = res.locals.reservation
+  res.json({data})
+}
+
 /** Validations */
 
 const properties = [
@@ -113,8 +118,21 @@ function openHours(req, res, next){
   next()
 }
 
+async function reservationExists(req, res, next) {
+  const {reservation_id} = req.params
+  const reservation = await service.read(reservation_id)
+  if(reservation){
+      res.locals.reservation = reservation
+      return next()
+  }
+  next({
+      status: 404,
+      message: `table ${reservation_id} does not exist`,
+  })
+}
+
 module.exports = {
-  list,
+  list: [asyncErrorBoundary(list)],
   create: [
     hasRequiredProperties,
     validDate,
@@ -125,4 +143,6 @@ module.exports = {
     openHours,
     asyncErrorBoundary(create)
   ],
+  read: [asyncErrorBoundary(reservationExists), read],
+  reservationExists: [asyncErrorBoundary(reservationExists)]
 };
