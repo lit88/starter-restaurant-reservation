@@ -31,7 +31,7 @@ async function read(req, res, next) {
   res.json({data})
 }
 
-async function update(req,res, next) {
+async function updateStatus(req,res, next) {
   const {status} = req.body.data
   const {reservation_id} = res.locals.reservation
   const updatedReservation = {
@@ -39,6 +39,11 @@ async function update(req,res, next) {
     status: status
   }
   const data = await service.update(updatedReservation)
+  res.json({data})
+}
+
+async function updateRes(req, res, next) {
+  const data = await service.updateRes(req.body.data)
   res.json({data})
 }
 
@@ -172,7 +177,7 @@ function notFinished(req, res, next) {
 
 function validStatus(req, res, next) {
   const {status} = req.body.data
-  if(status !== "booked" && status !== "seated" && status !== "finished") {
+  if(status !== "booked" && status !== "seated" && status !== "finished" && status !== "cancelled") {
     next({
       status: 400,
       message: `cannot make reservations for unknown status`,
@@ -196,10 +201,18 @@ module.exports = {
   ],
   read: [asyncErrorBoundary(reservationExists), read],
   reservationExists: [asyncErrorBoundary(reservationExists)],
-  update: [
+  updateStatus: [
     asyncErrorBoundary(reservationExists),
     validStatus,
     notFinished,
-    asyncErrorBoundary(update)
+    asyncErrorBoundary(updateStatus)
   ],
+  updateRes: [
+    asyncErrorBoundary(reservationExists),
+    hasRequiredProperties,
+    validPeople,
+    validDate,
+    validTime,
+    asyncErrorBoundary(updateRes)
+  ]
 };
