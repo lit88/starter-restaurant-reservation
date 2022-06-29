@@ -6,6 +6,6 @@ router.route("/").get(controller.list).post(controller.create).all(methodNotAllo
 
 router.route("/:table_id").get(controller.read).all(methodNotAllowed);
 
-router.route("/:table_id/seat").put(controller.update).all(methodNotAllowed);
+router.route("/:table_id/seat").put(controller.update).delete(controller.finished).all(methodNotAllowed);
 
 module.exports = router;
