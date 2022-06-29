@@ -25,6 +25,17 @@ async function read(req, res, next) {
   res.json({data})
 }
 
+async function update(req,res, next) {
+  const {status} = req.body.data
+  const {reservation_id} = res.locals.reservation
+  const updatedReservation = {
+    reservation_id: reservation_id,
+    status: status
+  }
+  const data = await service.update(updatedReservation)
+  res.json({data})
+}
+
 /** Validations */
 
 const properties = [
@@ -131,6 +142,39 @@ async function reservationExists(req, res, next) {
   })
 }
 
+function bookedStatus(req, res, next) {
+  const {status} = req.body.data
+  if(status !== "booked"){
+    next({
+      status: 400,
+      message: `cannot make reservations for ${status} status`,
+    })
+  }
+  next()
+}
+
+function notFinished(req, res, next) {
+  const {status} = res.locals.reservation
+  if(status !== "booked" && status !== "seated") {
+    next({
+      status: 400,
+      message: `cannot make reservations for finished reservations`,
+    })
+  }
+  next()
+}
+
+function validStatus(req, res, next) {
+  const {status} = req.body.data
+  if(status !== "booked" && status !== "seated" && status !== "finished") {
+    next({
+      status: 400,
+      message: `cannot make reservations for unknown status`,
+    })
+  }
+  next()
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -141,8 +185,15 @@ module.exports = {
     notTuesday,
     futureRes,
     openHours,
+    bookedStatus,
     asyncErrorBoundary(create)
   ],
   read: [asyncErrorBoundary(reservationExists), read],
-  reservationExists: [asyncErrorBoundary(reservationExists)]
+  reservationExists: [asyncErrorBoundary(reservationExists)],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    validStatus,
+    notFinished,
+    asyncErrorBoundary(update)
+  ]
 };

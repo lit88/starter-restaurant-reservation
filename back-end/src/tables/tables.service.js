@@ -16,18 +16,40 @@ function create(table){
         .then((createdRecords)=> createdRecords[0])
 }
 
-function update(updatedTable){
-    return knex("tables").select("*")
-        .where({table_id: updatedTable.table_id})
-        .update(updatedTable, "*")
-        .then((updatedRecords)=> updatedRecords[0])
+function update({ reservation_id, table_id }) {
+    return knex.transaction((trx) => {
+        return knex("reservations")
+            .transacting(trx)
+            .where({ reservation_id })
+            .update({ status: "seated" })
+            .then(() => {
+                return knex("tables")
+                    .transacting(trx)
+                    .where({ table_id })
+                    .update({ reservation_id: reservation_id })
+                    .returning("*")
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    })
 }
 
-function finished(doneTable){
-    return knex("tables").select("*")
-        .where({table_id: doneTable.table_id})
-        .update({reservation_id: null}, "*")
-        .then((updatedRecords)=> updatedRecords[0])
+function finished({ table_id, reservation_id }) {
+    return knex.transaction((trx) => {
+        return knex("reservations")
+            .transacting(trx)
+            .where({ reservation_id })
+            .update({ status: "finished" })
+            .then(() => {
+                return knex("tables")
+                    .transacting(trx)
+                    .where({ table_id })
+                    .update({ reservation_id: null })
+                    .returning("*")
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+    })
 }
 
 module.exports = {
