@@ -6,9 +6,15 @@ const hasProperties = require("../errors/hasProperties")
  * List handler for reservation resources
  */
 async function list(req, res) {
-  const date = req.query.date
-  const data = await service.list(date)
-  res.json({data})
+  const { date, mobile_number } = req.query
+  if (date){
+    const data = await service.list(date)
+    res.json({data})
+  }
+  if(mobile_number) {
+    const data = await service.search(mobile_number)
+    res.json({data})
+  }
 }
 
 /**
@@ -195,5 +201,5 @@ module.exports = {
     validStatus,
     notFinished,
     asyncErrorBoundary(update)
-  ]
+  ],
 };
