@@ -9,9 +9,9 @@ function create(reservation){
 function list(date){
     return knex("reservations")
         .select("*")
-        .where({ reservation_date: date,
-            status: "booked",
-            status: "seated" })
+        .where({ reservation_date: date})
+        .whereNot({status: "finished"})
+        .whereNot({status: "cancelled"})    
         .orderBy("reservation_date")
         .orderBy("reservation_time")
 }

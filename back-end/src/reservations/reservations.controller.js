@@ -155,7 +155,7 @@ async function reservationExists(req, res, next) {
 
 function bookedStatus(req, res, next) {
   const {status} = req.body.data
-  if(status !== "booked"){
+  if(status && status !== "booked"){
     next({
       status: 400,
       message: `cannot make reservations for ${status} status`,
