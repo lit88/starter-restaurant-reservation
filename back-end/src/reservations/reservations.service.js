@@ -6,6 +6,7 @@ function create(reservation){
         .then((createdRecords)=> createdRecords[0])
 }
 
+// function that retrieves all the reservations for a certain date that are either booked or seated
 function list(date){
     return knex("reservations")
         .select("*")
@@ -21,6 +22,7 @@ function read(reservation_id){
         .where({reservation_id: reservation_id}).first()
 }
 
+// function to update the the status of a reservation
 function update(updatedReservation){
     return knex("reservations").select("*")
     .where({reservation_id: updatedReservation.reservation_id})
@@ -28,6 +30,7 @@ function update(updatedReservation){
     .then((updatedRecords)=> updatedRecords[0])
 }
 
+// function to search reservations with a given mobile number
 function search(mobile_number) {
     return knex("reservations")
       .whereRaw(
@@ -37,6 +40,7 @@ function search(mobile_number) {
       .orderBy("reservation_date");
 }
 
+// function to update a reservation
 function updateRes(updatedReservation){
     return knex("reservations").select("*")
     .where({reservation_id: updatedReservation.reservation_id})

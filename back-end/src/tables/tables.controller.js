@@ -20,12 +20,14 @@ async function create(req, res, next) {
     res.status(201).json({data})
 }
 
+// function to seat a reservaion, updates the reservaion status to seated and adds the reservation id to the table
 async function update(req, res, next){
     const updatedTable = {table_id: res.locals.table.table_id, reservation_id: res.locals.reservation.reservation_id}
     const data = await service.update(updatedTable)
     res.json({data})
 }
 
+// function for a done reservation, updates the reservaion status to finishes and delete the reservation id from the table
 async function finished(req, res, next){
     const { table } = res.locals;
     const data = await service.finished(table)
@@ -34,6 +36,7 @@ async function finished(req, res, next){
 
 // Validations
 
+// function to make sure the table exists
 async function tableExists(req, res, next) {
     const {table_id} = req.params
     const table = await service.read(table_id)
@@ -47,6 +50,7 @@ async function tableExists(req, res, next) {
     })
 }
 
+// function to validate that a table has certain required properties
 const properties = [
     "table_name",
     "capacity",
@@ -54,6 +58,7 @@ const properties = [
 
 const hasRequiredProperties = hasProperties(properties)
 
+// function to validate that the capacity property is a number
 function validCapacity(req, res, next){
     const {capacity} = req.body.data
     if(!Number.isInteger(capacity)){
@@ -65,6 +70,7 @@ function validCapacity(req, res, next){
     next()
 }
 
+// function to validate the length of the table name has at least 2 characters
 function validName(req, res, next){
     const {table_name} = req.body.data
     if(table_name.length < 2){
@@ -76,6 +82,7 @@ function validName(req, res, next){
     next()
 }
 
+// function to make sure the reservation exists
 async function reservationExists(req, res, next){
     const { reservation_id } = req.body.data
     const reservation = await reservationsService.read(reservation_id)
@@ -89,6 +96,7 @@ async function reservationExists(req, res, next){
     })
 }
 
+// function to validate that the capacity of the table is enough for the people in the reservation
 function sufficientCapacity(req, res, next) {
     const {people} = res.locals.reservation
     const {capacity} = res.locals.table
@@ -101,6 +109,7 @@ function sufficientCapacity(req, res, next) {
     next()
 }
 
+// function to make sure the table isn't occupied
 function occupiedTable(req, res, next){
     const {reservation_id} = res.locals.table
     if(reservation_id){
@@ -112,6 +121,7 @@ function occupiedTable(req, res, next){
     next()
 }
 
+// function to confirm a table is occupied
 function unoccupiedTable(req, res, next){
     const {reservation_id} = res.locals.table
     if(!reservation_id){
@@ -123,6 +133,7 @@ function unoccupiedTable(req, res, next){
     next()
 }
 
+// function to validate that the request has data in general and a reservation id property in particular
 function validRequest(req, res, next) {
     const { data } = req.body;
     if (!data) {
@@ -140,6 +151,7 @@ function validRequest(req, res, next) {
     next();
 }
 
+// function that showes if a reservation has already been seated
 function alreadySeated(req, res, next) {
     const { status } = res.locals.reservation
     if ( status === "seated") {

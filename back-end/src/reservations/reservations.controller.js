@@ -3,8 +3,10 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties")
 
 /**
- * List handler for reservation resources
+ *  CURDL functions
  */
+
+// function that retrieves all the reservations for a certain date or a certain mobile number
 async function list(req, res) {
   const { date, mobile_number } = req.query
   if (date){
@@ -17,10 +19,6 @@ async function list(req, res) {
   }
 }
 
-/**
- * Create handler for reservation resources
- */
-
 async function create(req, res, next) {
   const data = await service.create(req.body.data)
   res.status(201).json({data})
@@ -31,6 +29,7 @@ async function read(req, res, next) {
   res.json({data})
 }
 
+// function to update the the status of a reservation
 async function updateStatus(req,res, next) {
   const {status} = req.body.data
   const {reservation_id} = res.locals.reservation
@@ -47,8 +46,11 @@ async function updateRes(req, res, next) {
   res.json({data})
 }
 
-/** Validations */
+/**
+ *  Validations
+ */
 
+// function to validate that a reservation has certain required properties
 const properties = [
   "first_name",
   "last_name",
@@ -60,6 +62,7 @@ const properties = [
 
 const hasRequiredProperties = hasProperties(properties)
 
+// function to validate the format of the date
 function validDate(req, res, next){
   const date = req.body.data.reservation_date
   const validDate = /\d{4}-\d{2}-\d{2}/.test(date)
@@ -72,6 +75,7 @@ function validDate(req, res, next){
   next()
 }
 
+// function to validate the format of the time
 function validTime(req, res, next){
   const time = req.body.data.reservation_time
   const validTime = /[0-9]{2}:[0-9]{2}/.test(time)
@@ -84,6 +88,7 @@ function validTime(req, res, next){
   next()
 }
 
+// function to validate that people property is a number
 function validPeople(req, res, next){
   const {people} = req.body.data
   if(!Number.isInteger(people)){
@@ -95,6 +100,7 @@ function validPeople(req, res, next){
   next()
 }
 
+// function to validate that the reservation is for a future date
 function futureRes(req, res, next){
   const resDate = req.body.data.reservation_date
   const resTime = req.body.data.reservation_time
@@ -108,6 +114,7 @@ function futureRes(req, res, next){
   next()
 }
 
+// function to validate that the reservation is not on a Tuesday
 function notTuesday(req, res, next) {
   const reservationDate = req.body.data.reservation_date
   const date = new Date(reservationDate)
@@ -121,6 +128,7 @@ function notTuesday(req, res, next) {
   next()
 }
 
+// function to validate that the reservation is within the opening hours
 function openHours(req, res, next){
   const resDate = req.body.data.reservation_date
   const resTime = req.body.data.reservation_time
@@ -140,6 +148,7 @@ function openHours(req, res, next){
   next()
 }
 
+// function to make sure the reservation exists
 async function reservationExists(req, res, next) {
   const {reservation_id} = req.params
   const reservation = await service.read(reservation_id)
@@ -153,6 +162,7 @@ async function reservationExists(req, res, next) {
   })
 }
 
+// function that makes sure the requested reservation has a booked status
 function bookedStatus(req, res, next) {
   const {status} = req.body.data
   if(status && status !== "booked"){
@@ -164,6 +174,7 @@ function bookedStatus(req, res, next) {
   next()
 }
 
+// function that makes sure the existing reservation isn't finished so it can be updated
 function notFinished(req, res, next) {
   const {status} = res.locals.reservation
   if(status !== "booked" && status !== "seated") {
@@ -175,6 +186,7 @@ function notFinished(req, res, next) {
   next()
 }
 
+// function validate that the status of a reservation is one of the 4 available
 function validStatus(req, res, next) {
   const {status} = req.body.data
   if(status !== "booked" && status !== "seated" && status !== "finished" && status !== "cancelled") {

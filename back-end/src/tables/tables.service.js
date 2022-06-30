@@ -16,6 +16,7 @@ function create(table){
         .then((createdRecords)=> createdRecords[0])
 }
 
+// function to seat a reservaion, updates the reservaion status to seated and adds the reservation id to the table
 function update({ reservation_id, table_id }) {
     return knex.transaction((trx) => {
         return knex("reservations")
@@ -34,6 +35,7 @@ function update({ reservation_id, table_id }) {
     })
 }
 
+// function for a done reservation, updates the reservaion status to finishes and delete the reservation id from the table
 function finished({ table_id, reservation_id }) {
     return knex.transaction((trx) => {
         return knex("reservations")
