@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom"
 
 function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
     return (
@@ -91,7 +90,7 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     required
                     />
             </div>
-            <Link to={cancelLink} className="btn btn-secondary">Cancel</Link>
+            <button onClick={cancelLink} className="btn btn-secondary">Cancel</button>
             <button type="submit" className="btn btn-primary m-3">Submit</button>
         </form>
     )

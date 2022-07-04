@@ -33,7 +33,7 @@ function TableForm({submitHandle, changeHandle, form, cancelLink}){
                     required
                     />
             </div>
-            <Link to={cancelLink} className="btn btn-secondary">Cancel</Link>
+            <button onClick={cancelLink} className="btn btn-secondary">Cancel</button>
             <button type="submit" className="btn btn-primary m-3">Submit</button>
         </form>
     )

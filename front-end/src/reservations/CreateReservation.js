@@ -39,7 +39,7 @@ function CreateReservation(){
           }
     }
 
-    const cancelLink= "/"
+    const cancelLink= ()=> history.push(`/dashboard`)
 
     return (
         <div>
