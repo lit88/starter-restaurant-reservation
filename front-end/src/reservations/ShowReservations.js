@@ -14,8 +14,13 @@ function ShowReservations({reservations}) {
               <span>Mobile Number: {mobile_number}</span>
               <br/>
               <span>Reservaion Number: {reservation_id}</span>
+              <br/>
+              <span data-reservation-id-status={reservation_id}>Reservaion status: {status}</span>
             </div>
+            {status === "booked" ?
             <a href={`/reservations/${reservation_id}/seat`} className="btn btn-primary mx-3">Seat</a>
+            : <div></div>
+          }
           </li>
     })}
         </ol>
