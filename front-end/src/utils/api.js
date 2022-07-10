@@ -111,3 +111,35 @@ export async function createReservation(reservation, signal) {
   const url = new URL(`${API_BASE_URL}/tables`);
   return await fetchJson(url, { headers, signal }, [])
 }
+
+/**
+ * Seat a reservaion, updates the reservaion status to seated and adds the reservation id to the table
+ * @returns {Promise<{table}>}
+ *  a promise that resolves to a possibly empty object of table saved in the database.
+ */
+ export async function seatTable(table_id, reservation_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { reservation_id: reservation_id } }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+/**
+ * function for a done reservation, updates the reservaion status to finishes and delete the reservation id from the table
+ * @returns {Promise<{table}>}
+ *  a promise that resolves to a possibly empty object of table saved in the database.
+ */
+ export async function finishTable(table_id, reservation_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({ data: table_id }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}

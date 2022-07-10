@@ -13,7 +13,7 @@ function ShowReservations({reservations}) {
               <br/>
               <span>Mobile Number: {mobile_number}</span>
               <br/>
-              <span>{reservation_id}</span>
+              <span>Reservaion Number: {reservation_id}</span>
             </div>
             <a href={`/reservations/${reservation_id}/seat`} className="btn btn-primary mx-3">Seat</a>
           </li>

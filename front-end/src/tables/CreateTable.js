@@ -22,7 +22,7 @@ function CreateTable(){
         const abortController = new AbortController()
         formData.capacity = Number(formData.capacity)
         try {
-            const response = await createTable(formData, abortController.signal)
+            await createTable(formData, abortController.signal)
             history.push(`/dashboard`)
         }
         catch(error) {
