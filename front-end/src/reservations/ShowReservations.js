@@ -18,9 +18,10 @@ function ShowReservations({reservations}) {
               <span data-reservation-id-status={reservation_id}>Reservaion status: {status}</span>
             </div>
             {status === "booked" ?
-            <a href={`/reservations/${reservation_id}/seat`} className="btn btn-primary mx-3">Seat</a>
-            : <div></div>
-          }
+              <a href={`/reservations/${reservation_id}/seat`} className="btn btn-primary mx-3">Seat</a>
+              : <div></div>
+            }
+            <a href={`/reservations/${reservation_id}/edit`} className="btn btn-primary mx-3">Edit</a>
           </li>
     })}
         </ol>
