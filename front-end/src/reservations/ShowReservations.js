@@ -1,7 +1,9 @@
 import React from "react";
+import CancelReservation from "./CancelReservation";
 
 function ShowReservations({reservations}) {
-    if(reservations.length > 0){
+  
+  if(reservations.length > 0){
     return (
         <ol className="list-group list-group-numbered">
           { reservations.map((reservation)=> {
@@ -22,11 +24,12 @@ function ShowReservations({reservations}) {
               : <div></div>
             }
             <a href={`/reservations/${reservation_id}/edit`} className="btn btn-primary mx-3">Edit</a>
+            <CancelReservation reservation_id={reservation_id} />
           </li>
     })}
         </ol>
-    )}
-    return <h5>No reservations for the requested date</h5>
+  )}
+  return <h5>No reservations for the requested date</h5>
 }
 
 export default ShowReservations
