@@ -1,14 +1,17 @@
 import React from "react";
+import moment from "moment";
 
 function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
+    const date = moment(form.reservation_date).format("yyyy-MM-DD")
+
     return (
         <form onSubmit={submitHandle}>
             <div>
-                <label htmlFor="first_name" class="form-label">First Name</label>
+                <label htmlFor="first_name" className="form-label">First Name</label>
                 <br />
                 <input
                     id="first_name"
-                    class="form-control"
+                    className="form-control"
                     type="text"
                     placeholder="First Name"
                     name="first_name"
@@ -18,11 +21,11 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     />
             </div>
             <div>
-                <label htmlFor="last_name" class="form-label">Last Name</label>
+                <label htmlFor="last_name" className="form-label">Last Name</label>
                 <br />
                 <input
                     id="last_name"
-                    class="form-control"
+                    className="form-control"
                     type="text"
                     placeholder="Last Name"
                     name="last_name"
@@ -32,11 +35,11 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     />
             </div>
             <div>
-                <label htmlFor="mobile_number" class="form-label">Mobile Number</label>
+                <label htmlFor="mobile_number" className="form-label">Mobile Number</label>
                 <br />
                 <input
                     id="mobile_number"
-                    class="form-control"
+                    className="form-control"
                     type="tel"
                     placeholder="(---) --- ----"
                     name="mobile_number"
@@ -46,26 +49,26 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     />
             </div>
             <div>
-                <label htmlFor="reservation_date" class="form-label">Reservation Date</label>
+                <label htmlFor="reservation_date" className="form-label">Reservation Date</label>
                 <br />
                 <input
                     id="reservation_date"
-                    class="form-control"
+                    className="form-control"
                     type="date"
                     pattern="\d{4}-\d{2}-\d{2}"
                     placeholder="YYYY-MM-DD"
                     name="reservation_date"
                     onChange={changeHandle}
-                    value={form.reservation_date}
+                    value={date}
                     required
                     />
             </div>
             <div>
-                <label htmlFor="reservation_time" class="form-label">Reservation Time</label>
+                <label htmlFor="reservation_time" className="form-label">Reservation Time</label>
                 <br />
                 <input
                     id="reservation_time"
-                    class="form-control"
+                    className="form-control"
                     type="time"
                     pattern="[0-9]{2}:[0-9]{2}"
                     placeholder="HH:MM"
@@ -76,11 +79,11 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     />
             </div>
             <div>
-                <label htmlFor="people" class="form-label">Number of people</label>
+                <label htmlFor="people" className="form-label">Number of people</label>
                 <br />
                 <input
                     id="people"
-                    class="form-control"
+                    className="form-control"
                     type="number"
                     min={1}
                     placeholder={1}
@@ -90,7 +93,7 @@ function ReservationForm({submitHandle, changeHandle, form, cancelLink}){
                     required
                     />
             </div>
-            <button onClick={cancelLink} className="btn btn-secondary">Cancel</button>
+            <button type="button" onClick={cancelLink} className="btn btn-secondary">Cancel</button>
             <button type="submit" className="btn btn-primary m-3">Submit</button>
         </form>
     )

@@ -222,9 +222,13 @@ module.exports = {
   updateRes: [
     asyncErrorBoundary(reservationExists),
     hasRequiredProperties,
-    validPeople,
     validDate,
     validTime,
+    validPeople,
+    notTuesday,
+    futureRes,
+    openHours,
+    bookedStatus,
     asyncErrorBoundary(updateRes)
   ]
 };

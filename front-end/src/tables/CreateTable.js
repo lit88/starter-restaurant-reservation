@@ -35,7 +35,7 @@ function CreateTable(){
           }
     }
 
-    const cancelLink= ()=> history.push(`/dashboard`)
+    const cancelLink= ()=> history.goBack()
 
     return (
         <div>

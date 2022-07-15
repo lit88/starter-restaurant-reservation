@@ -54,7 +54,7 @@ function Dashboard({ date }) {
     getDate()
   }, [query, route])
 
-  useEffect(loadDashboard, [date])
+  useEffect(loadDashboard, [currentDate])
 
   return (
     <main>

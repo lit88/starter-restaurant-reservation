@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom"
 import ReservationForm from "./ReservationForm"
 import ErrorAlert from "../layout/ErrorAlert";
-import { readReservation, updateReservation } from "../utils/api"
+import { readReservation, updateReservation } from "../utils/api";
 
 function EditReservation() {
     const { reservation_id } = useParams()
@@ -16,7 +16,7 @@ function EditReservation() {
             const response = await readReservation(reservation_id)
             setReservation(response)
         } getReservation()
-    }, [])
+    }, [reservation_id])
     
     const changeHandle = ({target})=> {
         setReservation({...reservation, [target.name]: target.value})
@@ -28,8 +28,8 @@ function EditReservation() {
         const abortController = new AbortController()
         reservation.people = Number(reservation.people)
         try {
-            await updateReservation(reservation, abortController.signal)
-            history.goBack()
+            const response = await updateReservation(reservation, abortController.signal)
+            history.push(`/dashboard?date=${response.reservation_date}`)
         }
         catch(error) {
             if(error.name !== "AbortError") {
