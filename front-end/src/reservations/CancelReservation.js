@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { cancelReservation } from "../utils/api"
 import ErrorAlert from "../layout/ErrorAlert"
-import { useHistory } from "react-router-dom";
 
 function CancelReservation({reservation_id}){
     const [err, setErr] = useState(false)
-    const history = useHistory()
 
     const cancelHandle = async (event)=> {
         event.preventDefault()
@@ -14,7 +12,7 @@ function CancelReservation({reservation_id}){
         if(window.confirm("Do you want to cancel this reservation? This cannot be undone.")){
           try {
               await cancelReservation(reservation_id, abortController.signal)
-              history.goBack()
+              window.location.reload(true)
           }
           catch(error) {
               if(error.name !== "AbortError") {
