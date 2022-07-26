@@ -58,7 +58,7 @@ function SeatReservation(){
             >
                 <option value="">-- Select an Option --</option>
                 {tables.map((table)=>
-                <option value={table.table_id}>{table.table_name} - {table.capacity}</option>
+                <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>
                 )}
             </select>
             </label>

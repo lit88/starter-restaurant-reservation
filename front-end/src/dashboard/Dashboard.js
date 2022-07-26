@@ -63,20 +63,20 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <div>
-        <button type="button" onClick={()=> {
+      <div className="d-grid gap-2 d-md-flex justify-content-center">
+        <button type="button" className="btn btn-outline-primary mx-2 my-2" onClick={()=> {
           history.push(`/dashboard?date=${previous(date)}`)
           setCurrentDate(previous(date))
           }}>
         Previous
         </button>
-        <button type="button" onClick={
+        <button type="button" className="btn btn-outline-primary mx-2 my-2" onClick={
           ()=> {history.push(`/dashboard?date=${today()}`)
           setCurrentDate(today())
           }}>
           Today
         </button>
-        <button type="button" onClick={()=> {
+        <button type="button" className="btn btn-outline-primary mx-2 my-2" onClick={()=> {
           history.push(`/dashboard?date=${next(date)}`)
           setCurrentDate(next(date))
           }}>

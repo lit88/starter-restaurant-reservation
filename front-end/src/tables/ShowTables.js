@@ -7,7 +7,7 @@ function ShowTables({tables}) {
         <div className="row">
           { tables.map((table)=> {
             return (
-            <div className="col-sm-6">
+            <div key={table.table_id} className="col-sm-6">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">{table.table_name}</h5>

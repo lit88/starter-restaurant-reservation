@@ -8,7 +8,7 @@ function ShowReservations({reservations}) {
         <ol className="list-group list-group-numbered">
           { reservations.map((reservation)=> {
           const {people, first_name, last_name, reservation_id, mobile_number, status} = reservation
-            return <li className="list-group-item d-flex justify-content-between align-items-start">
+            return <li key={reservation_id} className="list-group-item d-flex justify-content-between align-items-start">
             <div className="ms-2 me-auto">
               <div className="fw-bold">{first_name} {last_name}</div>
               <span>Number of people: {people}</span>
